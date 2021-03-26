@@ -23,11 +23,11 @@ public class LagrangePolynomial {
 		double[] censusPopulation = {151.3, 179.3, 203.3, 226.5, 249.6, 282.5, 309.3};
 
 		LagrangePolynomial censusPolynomial = new LagrangePolynomial(censusYear, censusPopulation);
-		System.out.println("Census Estimate 1975: " + censusPolynomial.evaluateAt(1975));
-		System.out.println("Census Estimate 2020: " + censusPolynomial.evaluateAt(2020));
+		System.out.println("Census Estimate 1975: " + censusPolynomial.evaluateAt(1975) +" million");
+		System.out.println("Census Estimate 2020: " + censusPolynomial.evaluateAt(2020) +" million");
 
 		// Estimating the Snipe population in 2017
-		double[] snipeYear = {2012, 2014, 2016, 2018, 2020};
+		double[] snipeYear = {2012, 2014, 2016, 2018,2019, 2020};
 		double[] snipePopulation = {51, 1005, 20453, 405232, 1815700, 8137723};
 
 		LagrangePolynomial snipePolynomial = new LagrangePolynomial(snipeYear, snipePopulation);
@@ -62,19 +62,20 @@ public class LagrangePolynomial {
 
 		// YOUR CODE HERE
 
-		Pair<Double, Double> currPair = null;
 		for (int n = 0; n < fnEvals.size(); n++) {
 			double kValue = fnEvals.get(n).getL();	
 
-			double Ln_k = 1.0;
+			double Ln_k_Numerator = 1.0;
+			double Ln_k_denominator= 1.0;
 			for (int k = 0; k < fnEvals.size(); k++) {
 				if(k != n) {
-					currPair = fnEvals.get(k);
-					Ln_k = Ln_k * (x - currPair.getL()) / (kValue - currPair.getL());
+				
+					Ln_k_Numerator = Ln_k_Numerator * (x - fnEvals.get(k).getL());  
+					Ln_k_denominator = Ln_k_denominator* (kValue - fnEvals.get(k).getL());
 				}
 			}
 
-			sum = sum + fnEvals.get(n).getR() * Ln_k;
+			sum = sum + fnEvals.get(n).getR() * Ln_k_Numerator / Ln_k_denominator;
 		}
 
 		return sum;
